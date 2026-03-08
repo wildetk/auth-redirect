@@ -1,7 +1,10 @@
 <html><body><script>
-  window.opener.postMessage(
-    { type:"msft_token", token:new URLSearchParams(location.hash.slice(1)).get("access_token") },
-    "*"
-  );
+  var token = new URLSearchParams(location.hash.slice(1)).get("access_token");
+  if (token) {
+    localStorage.setItem("msft_pending_token", token);
+    if (window.opener) {
+      window.opener.postMessage({ type:"msft_token", token:token }, "*");
+    }
+  }
   window.close();
 </script></body></html>
